@@ -1,5 +1,20 @@
-FROM ubuntu:20.04
-RUN apt-get update && apt-get install -y python3 python3-pip
-RUN pip3 install flask
-COPY app.py /opt/
-ENTRYPOINT FLASK_APP=/opt/app.py flask run --host=0.0.0.0 --port=8080
+# Use the official Python image from Docker Hub
+FROM python:3.8-slim
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy the requirements.txt file
+COPY requirements.txt .
+
+# Install Python dependencies
+RUN pip install -r requirements.txt
+
+# Copy the entire project into the container
+COPY . .
+
+# Expose port 5000
+EXPOSE 5000
+
+# Command to run the application
+CMD ["python", "app.py"]
